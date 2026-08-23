@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.HitsplatApplied;
@@ -19,8 +20,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Sensor",
-	description = "Shows compact, movable combat and skilling activity status cards",
-	tags = {"activity", "combat", "skilling", "status", "overlay"}
+	description = "Shows compact, movable combat, skilling and session status cards",
+	tags = {"activity", "combat", "skilling", "session", "status", "overlay"}
 )
 public class SensorPlugin extends Plugin
 {
@@ -49,6 +50,9 @@ public class SensorPlugin extends Plugin
 	@Inject
 	private SkillingOverlay skillingOverlay;
 
+	@Inject
+	private SessionOverlay sessionOverlay;
+
 	private final Map<Skill, Integer> lastXp = new EnumMap<>(Skill.class);
 	private long combatUntil;
 	private long skillingUntil;
@@ -67,6 +71,7 @@ public class SensorPlugin extends Plugin
 		lastXp.clear();
 		overlayManager.add(combatOverlay);
 		overlayManager.add(skillingOverlay);
+		overlayManager.add(sessionOverlay);
 	}
 
 	@Override
@@ -74,6 +79,7 @@ public class SensorPlugin extends Plugin
 	{
 		overlayManager.remove(combatOverlay);
 		overlayManager.remove(skillingOverlay);
+		overlayManager.remove(sessionOverlay);
 		combatUntil = 0L;
 		skillingUntil = 0L;
 		lastXp.clear();
@@ -128,5 +134,10 @@ public class SensorPlugin extends Plugin
 		}
 
 		return local.getAnimation() != -1;
+	}
+
+	boolean isLoggedIn()
+	{
+		return client.getGameState() == GameState.LOGGED_IN;
 	}
 }
