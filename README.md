@@ -1,17 +1,17 @@
 # Sensor
 
-Sensor is a small RuneLite plugin that gives clear, at-a-glance feedback for three common client states: **combat**, **skilling**, and **session**.
+Sensor is a small RuneLite plugin that shows two compact activity indicators: **Combat** and **Skilling**.
 
-The goal is simple: make it easy to see whether the client currently considers you active in combat, actively skilling, or logged in, without adding a large dashboard or changing normal gameplay.
+The goal is simple: give a clear, at-a-glance indication of whether the local client currently appears to be in combat or actively skilling, without adding a large panel or changing normal gameplay.
 
 ## Features
 
-- Separate **Combat**, **Skilling**, and **Session** status cards.
+- Separate **Combat** and **Skilling** status cards.
 - Each card can be enabled or disabled independently.
-- Green indicates an active/logged-in state; red indicates an inactive/logged-out state.
-- Cards can be moved with RuneLite's normal **Alt-drag** overlay controls.
-- Cards are resizable and scale their content with the selected size.
-- Combat and skilling detection are intentionally generic rather than tied to one activity.
+- Green indicates an active state; red indicates an inactive state.
+- Cards use RuneLite's normal **Alt-drag** overlay controls for positioning.
+- Cards are resizable and scale their contents with the selected size.
+- Detection is intentionally generic rather than tied to one specific training method.
 
 ## Detection
 
@@ -28,28 +28,20 @@ Skilling uses two lightweight signals outside combat:
 
 A short hold period keeps the indicator stable between individual XP drops or repeated actions.
 
-This makes the indicator useful across activities such as Woodcutting, Firemaking, Fishing, Mining, Cooking, Herblore and similar skills without maintaining a separate hard-coded list of actions for every method.
-
-### Session
-
-Session is a direct read of RuneLite's client game state:
-
-- **LOGGED IN** when the client reports `LOGGED_IN`.
-- **LOGGED OUT** for other game states.
+This allows the card to work across activities such as Woodcutting, Firemaking, Fishing, Mining, Cooking, Herblore and similar skills without maintaining a separate hard-coded list of actions for every method.
 
 ## Why use it?
 
-RuneLite already exposes a lot of detailed information, but sometimes a compact yes/no status is more useful than another full panel. Sensor is intended for players who want minimal visual confirmation of activity and login state, especially when using compact layouts, multiple RuneLite clients, streaming layouts, or other screen arrangements where space matters.
+RuneLite already provides detailed information through many plugins, but sometimes a simple yes/no activity indicator is more useful than another full panel. Sensor is intended for players who prefer a compact layout, use multiple RuneLite windows, stream or record gameplay, or simply want a minimal visual confirmation of activity state.
 
 ## Configuration
 
-The plugin keeps configuration intentionally small:
+Sensor intentionally keeps its configuration small:
 
 - **Show combat card**
 - **Show skilling card**
-- **Show session card**
 
-Position and size are handled by RuneLite's native overlay controls instead of custom window logic.
+Position and size are handled through RuneLite's native overlay controls rather than custom window-management code.
 
 ## Privacy and game interaction
 
@@ -65,7 +57,7 @@ It does **not**:
 - communicate with an external server;
 - collect or upload account data.
 
-It only reads RuneLite client state required to draw the local status indicators.
+It only reads RuneLite client state required to draw the two local activity indicators.
 
 ## Local development
 
