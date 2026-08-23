@@ -30,15 +30,4 @@ public interface SensorConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "showSessionCard",
-		name = "Show session card",
-		description = "Show the login session status card",
-		position = 2
-	)
-	default boolean showSessionCard()
-	{
-		return true;
-	}
 }
