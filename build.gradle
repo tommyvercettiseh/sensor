@@ -24,6 +24,19 @@ dependencies {
 	testImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
 }
 
+// DEV-COMBINED ONLY:
+// Compile the sibling ObjectMarker plugin into the test runtime so one RuneLite
+// developer client can load both plugins. This branch expects this local layout:
+//   C:\Users\Hesse\Desktop\Codex\sensor
+//   C:\Users\Hesse\Desktop\Codex\objectmarker
+sourceSets {
+	test {
+		java {
+			srcDir '../objectmarker/src/main/java'
+		}
+	}
+}
+
 group = 'com.hes.sensor'
 version = '0.1.0'
 
