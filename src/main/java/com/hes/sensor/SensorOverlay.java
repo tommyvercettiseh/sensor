@@ -27,7 +27,7 @@ public class SensorOverlay extends Overlay
 	public SensorOverlay(SensorPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPosition(OverlayPosition.TOP_LEFT);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
@@ -44,11 +44,8 @@ public class SensorOverlay extends Overlay
 		graphics.setColor(TEXT);
 		graphics.drawString("SENSOR", x + PAD, y + 20);
 
-		boolean combat = state == SensorPlugin.SensorState.COMBAT;
-		boolean skilling = state == SensorPlugin.SensorState.SKILLING;
-
-		drawRow(graphics, x + PAD, y + 38, "COMBAT", combat);
-		drawRow(graphics, x + PAD, y + 76, "SKILLING", skilling);
+		drawCombatRow(graphics, x + PAD, y + 38, plugin.isCombat());
+		drawSkillingRow(graphics, x + PAD, y + 76, plugin.isSkilling());
 
 		graphics.setColor(TEXT);
 		graphics.drawString("STATE:", x + PAD, y + 122);
@@ -58,16 +55,24 @@ public class SensorOverlay extends Overlay
 		return new Dimension(WIDTH, HEIGHT);
 	}
 
-	private void drawRow(Graphics2D graphics, int x, int y, String label, boolean active)
+	private void drawCombatRow(Graphics2D graphics, int x, int y, boolean active)
+	{
+		drawRow(graphics, x, y, "COMBAT", active ? "ACTIVE" : "OFF", active);
+	}
+
+	private void drawSkillingRow(Graphics2D graphics, int x, int y, boolean active)
+	{
+		drawRow(graphics, x, y, "SKILLING", active ? "SKILLING" : "NOT SKILLING", active);
+	}
+
+	private void drawRow(Graphics2D graphics, int x, int y, String label, String status, boolean active)
 	{
 		FontMetrics metrics = graphics.getFontMetrics();
 		graphics.setColor(TEXT);
 		graphics.drawString(label, x, y);
 
-		String status = active ? "ACTIVE" : "OFF";
 		graphics.setColor(active ? GREEN : RED);
 		graphics.drawString(status, x + WIDTH - (PAD * 2) - metrics.stringWidth(status), y);
-
 		graphics.fillRoundRect(x, y + 7, WIDTH - (PAD * 2), BAR_HEIGHT, BAR_HEIGHT, BAR_HEIGHT);
 	}
 }
