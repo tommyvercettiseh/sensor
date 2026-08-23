@@ -19,8 +19,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Sensor",
-	description = "Shows clear combat and skilling activity states",
-	tags = {"sensor", "combat", "skilling", "status"}
+	description = "Shows compact, movable combat and skilling activity status cards",
+	tags = {"activity", "combat", "skilling", "status", "overlay"}
 )
 public class SensorPlugin extends Plugin
 {
