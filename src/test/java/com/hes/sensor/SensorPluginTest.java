@@ -8,8 +8,10 @@ public class SensorPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(SensorPlugin.class);
-		ExternalPluginManager.loadBuiltin(ObjectMarkerPlugin.class);
+		ExternalPluginManager.loadBuiltin(
+			SensorPlugin.class,
+			ObjectMarkerPlugin.class
+		);
 		RuneLite.main(args);
 	}
 }
