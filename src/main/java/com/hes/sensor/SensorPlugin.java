@@ -1,5 +1,6 @@
 package com.hes.sensor;
 
+import com.google.inject.Provides;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
@@ -10,6 +11,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.StatChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,11 +44,20 @@ public class SensorPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private SensorOverlay overlay;
+	private CombatOverlay combatOverlay;
+
+	@Inject
+	private SkillingOverlay skillingOverlay;
 
 	private final Map<Skill, Integer> lastXp = new EnumMap<>(Skill.class);
 	private long combatUntil;
 	private long skillingUntil;
+
+	@Provides
+	SensorConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SensorConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -54,13 +65,15 @@ public class SensorPlugin extends Plugin
 		combatUntil = 0L;
 		skillingUntil = 0L;
 		lastXp.clear();
-		overlayManager.add(overlay);
+		overlayManager.add(combatOverlay);
+		overlayManager.add(skillingOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(combatOverlay);
+		overlayManager.remove(skillingOverlay);
 		combatUntil = 0L;
 		skillingUntil = 0L;
 		lastXp.clear();
@@ -96,21 +109,6 @@ public class SensorPlugin extends Plugin
 		skillingUntil = System.currentTimeMillis() + SKILLING_HOLD_MS;
 	}
 
-	SensorState getState()
-	{
-		if (isCombat())
-		{
-			return SensorState.COMBAT;
-		}
-
-		if (isSkilling())
-		{
-			return SensorState.SKILLING;
-		}
-
-		return SensorState.IDLE;
-	}
-
 	boolean isCombat()
 	{
 		return client.getLocalPlayer() != null && System.currentTimeMillis() < combatUntil;
@@ -130,12 +128,5 @@ public class SensorPlugin extends Plugin
 		}
 
 		return local.getAnimation() != -1;
-	}
-
-	enum SensorState
-	{
-		COMBAT,
-		SKILLING,
-		IDLE
 	}
 }
